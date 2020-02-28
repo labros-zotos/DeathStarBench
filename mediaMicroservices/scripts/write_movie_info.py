@@ -92,9 +92,9 @@ async def write_movie_info(addr, raw_movies):
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument("-c", "--cast", action="store", dest="cast_filename",
-    type=str, default="/home1/root/DeathStarBench/mediaMicroservices/datasets/tmdb/casts.json")
+    type=str, default="/home1/home/ubuntu/DeathStarBench/mediaMicroservices/datasets/tmdb/casts.json")
   parser.add_argument("-m", "--movie", action="store", dest="movie_filename",
-    type=str, default="/home1/root/DeathStarBench/mediaMicroservices/datasets/tmdb/movies.json")
+    type=str, default="/home1/home/ubuntu/DeathStarBench/mediaMicroservices/datasets/tmdb/movies.json")
   parser.add_argument("--server_address", action="store", dest="server_address",
     type=str, default="http://10.68.24.13:8080",
     help="The address of the server. If running outside of docker you should use 8082 as the port. "

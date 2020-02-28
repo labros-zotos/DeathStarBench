@@ -15,7 +15,7 @@ services:
     hostname: social-graph-service
 #    ports:
 #      - 10000:9090
-    restart: always
+    restart: "no"
     entrypoint: SocialGraphService
 
   social-graph-mongodb:
@@ -23,19 +23,19 @@ services:
     hostname: social-graph-mongodb
 #    ports:
 #      - 27018:27017
-    restart: always
+    restart: "no"
 
   social-graph-redis:
     image: redis
     hostname: social-graph-redis
 #    ports:
 #      - 6380:6379
-    restart: always
+    restart: "no"
 
   write-home-timeline-service:
     image: yg397/social-network-microservices
     hostname: write-home-timeline-service
-    restart: always
+    restart: "no"
     entrypoint: WriteHomeTimelineService
     depends_on:
       - write-home-timeline-rabbitmq
@@ -49,21 +49,21 @@ services:
 #    ports:
 #      - 15672:15672
 #      - 5672:5672
-    restart: always
+    restart: "no"
 
   home-timeline-redis:
     image: redis
     hostname: home-timeline-redis
 #    ports:
 #      - 6381:6379
-    restart: always
+    restart: "no"
 
   compose-post-service:
     image: yg397/social-network-microservices
     hostname: compose-post-service
 #    ports:
 #      - 10001:9090
-    restart: always
+    restart: "no"
     entrypoint: ComposePostService
     depends_on:
       - write-home-timeline-rabbitmq
@@ -73,14 +73,14 @@ services:
     hostname: compose-post-redis
 #    ports:
 #      - 6382:6379
-    restart: always
+    restart: "no"
 
   post-storage-service:
     image: yg397/social-network-microservices
     hostname: post-storage-service
     ports:
       - 10002:9090
-    restart: always
+    restart: "no"
     entrypoint: PostStorageService
 
   post-storage-memcached:
@@ -88,21 +88,21 @@ services:
     hostname: post-storage-memcached
 #    ports:
 #      - 11212:11211
-    restart: always
+    restart: "no"
 
   post-storage-mongodb:
     image: mongo
     hostname: post-storage-mongodb
 #    ports:
 #      - 27019:27017
-    restart: always
+    restart: "no"
 
   user-timeline-service:
     image: yg397/social-network-microservices
     hostname: user-timeline-service
 #    ports:
 #      - 10003:9090
-    restart: always
+    restart: "no"
     entrypoint: UserTimelineService
 
   user-timeline-redis:
@@ -110,21 +110,21 @@ services:
     hostname: user-timeline-redis
 #    ports:
 #      - 6383:6379
-    restart: always
+    restart: "no"
 
   user-timeline-mongodb:
     image: mongo
     hostname: user-timeline-mongodb
 #    ports:
 #      - 27020:27017
-    restart: always
+    restart: "no"
 
   url-shorten-service:
     image: yg397/social-network-microservices
     hostname: url-shorten-service
 #    ports:
 #      - 10004:9090
-    restart: always
+    restart: "no"
     entrypoint: UrlShortenService
 
   url-shorten-memcached:
@@ -132,21 +132,21 @@ services:
     hostname: url-shorten-memcached
 #    ports:
 #      - 11213:11211
-    restart: always
+    restart: "no"
 
   url-shorten-mongodb:
     image: mongo
     hostname: url-shorten-mongodb
 #    ports:
 #      - 27021:27017
-    restart: always
+    restart: "no"
 
   user-service:
     image: yg397/social-network-microservices
     hostname: user-service
 #    ports:
 #      - 10005:9090
-    restart: always
+    restart: "no"
     entrypoint: UserService
 
   user-memcached:
@@ -154,21 +154,21 @@ services:
     hostname: user-memcached
 #    ports:
 #      - 11214:11211
-    restart: always
+    restart: "no"
 
   user-mongodb:
     image: mongo
     hostname: user-mongodb
 #    ports:
 #      - 27023:27017
-    restart: always
+    restart: "no"
 
   media-service:
     image: yg397/social-network-microservices
     hostname: media-service
 #    ports:
 #      - 10006:9090
-    restart: always
+    restart: "no"
     entrypoint: MediaService
 
   media-memcached:
@@ -176,21 +176,21 @@ services:
     hostname: media-memcached
 #    ports:
 #      - 11215:11211
-    restart: always
+    restart: "no"
 
   media-mongodb:
     image: mongo
     hostname: media-mongodb
 #    ports:
 #      - 27024:27017
-    restart: always
+    restart: "no"
 
   text-service:
     image: yg397/social-network-microservices
     hostname: text-service
 #    ports:
 #      - 10007:9090
-    restart: always
+    restart: "no"
     entrypoint: TextService
 
   unique-id-service:
@@ -198,7 +198,7 @@ services:
     hostname: unique-id-service
 #    ports:
 #      - 10008:9090
-    restart: always
+    restart: "no"
     entrypoint: UniqueIdService
 
   user-mention-service:
@@ -206,7 +206,7 @@ services:
     hostname: user-mention-service
 #    ports:
 #      - 10009:9090
-    restart: always
+    restart: "no"
     entrypoint: UserMentionService
 
   home-timeline-service:
@@ -214,7 +214,7 @@ services:
     hostname: home-timeline-service
 #    ports:
 #      - 10010:9090
-    restart: always
+    restart: "no"
     entrypoint: HomeTimelineService
 
   nginx-thrift:
@@ -222,7 +222,7 @@ services:
     hostname: nginx-thrift
     ports:
       - 8080:8080
-    restart: always
+    restart: "no"
     volumes:
       - ./nginx-web-server/lua-scripts:/usr/local/openresty/nginx/lua-scripts
       - ./nginx-web-server/pages:/usr/local/openresty/nginx/pages
@@ -235,7 +235,7 @@ services:
     hostname: media-frontend
     ports:
       - 8081:8080
-    restart: always
+    restart: "no"
     volumes:
       - ./media-frontend/lua-scripts:/usr/local/openresty/nginx/lua-scripts
       - ./media-frontend/conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
@@ -251,6 +251,6 @@ services:
       - 16686:16686
 #      - 14268:14268
 #      - 9411:9411
-    restart: always
+    restart: "no"
     environment:
       - COLLECTOR_ZIPKIN_HTTP_PORT=9411
