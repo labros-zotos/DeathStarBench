@@ -1,6 +1,6 @@
 import aiohttp
 import asyncio
-import sys
+import argparse, sys
 
 async def upload_follow(session, addr, user_0, user_1):
   payload = {'user_name': 'username_' + user_0, 'followee_name': 'username_' + user_1}
@@ -60,16 +60,28 @@ async def follow(addr, edges):
     print(idx, "edges finished")
 
 if __name__ == '__main__':
+  parser=argparse.ArgumentParser()
+
+  parser.add_argument('--dataset', help='Social graph dataset')
+  parser.add_argument('--clusterIP', help='Cluster IP')
+  parser.add_argument('--clusterPort', help='Cluster Port')
+
   if len(sys.argv) < 2:
     filename = "datasets/social-graph/socfb-Reed98/socfb-Reed98.mtx"
+    cluster_ip = "10.0.1.0"
+    cluster_port = "8080"
   else:
-    filename = sys.argv[1]
+    args=parser.parse_args()
+    filename = args.dataset
+    cluster_ip = args.clusterIP
+    cluster_port = args.clusterPort
+  
   with open(filename, 'r') as file:
     nodes = getNodes(file)
     edges = getEdges(file)
 
   # Use your cluster-ip here:
-  addr = "http://10.68.39.88:8080"
+  addr = "http://"+cluster_ip+":"+cluster_port
   loop = asyncio.get_event_loop()
   future = asyncio.ensure_future(register(addr, nodes))
   loop.run_until_complete(future)
