@@ -40,3 +40,5 @@ spec:
         image: yg397/social-network-microservices
         command: ["HomeTimelineService"]
       restartPolicy: Always
+      nodeSelector:
+        hostname: kbs-2

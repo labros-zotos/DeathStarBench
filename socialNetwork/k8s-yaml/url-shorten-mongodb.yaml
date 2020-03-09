@@ -39,3 +39,5 @@ spec:
       - name: url-shorten-mongodb
         image: mongo
       restartPolicy: Always
+      nodeSelector:
+        hostname: kbs-3

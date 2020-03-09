@@ -39,3 +39,5 @@ spec:
       - name: social-graph-redis
         image: redis
       restartPolicy: Always
+      nodeSelector:
+        hostname: kbs-3

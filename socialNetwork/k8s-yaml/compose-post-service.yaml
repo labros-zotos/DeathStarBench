@@ -42,3 +42,5 @@ spec:
         image: yg397/social-network-microservices
         command: ["ComposePostService"]
       restartPolicy: Always
+      nodeSelector:
+        hostname: kbs-2

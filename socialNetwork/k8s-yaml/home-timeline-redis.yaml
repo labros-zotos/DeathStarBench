@@ -39,3 +39,5 @@ spec:
       - name: home-timeline-redis
         image: redis
       restartPolicy: Always
+      nodeSelector:
+        hostname: kbs-2

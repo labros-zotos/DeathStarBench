@@ -57,3 +57,5 @@ spec:
         hostPath: 
           path: /home/ubuntu/DeathStarBench/socialNetwork/media-frontend/conf/nginx-k8s.conf
           type: File
+      nodeSelector:
+        hostname: kbs-2

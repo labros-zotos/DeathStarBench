@@ -39,3 +39,5 @@ spec:
       - name: social-graph-mongodb
         image: mongo
       restartPolicy: Always
+      nodeSelector:
+        hostname: kbs-3

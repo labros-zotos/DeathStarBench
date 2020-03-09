@@ -39,3 +39,5 @@ spec:
       - name: post-storage-memcached
         image: memcached
       restartPolicy: Always
+      nodeSelector:
+        hostname: kbs-2

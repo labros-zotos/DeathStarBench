@@ -39,3 +39,5 @@ spec:
       - name: post-storage-mongodb
         image: mongo
       restartPolicy: Always
+      nodeSelector:
+        hostname: kbs-2

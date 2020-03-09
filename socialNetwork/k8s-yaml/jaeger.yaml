@@ -72,3 +72,5 @@ spec:
         - name: COLLECTOR_ZIPKIN_HTTP_PORT
           value: "9411"
       restartPolicy: Always
+      nodeSelector:
+        hostname: kbs-2

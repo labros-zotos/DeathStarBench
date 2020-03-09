@@ -40,3 +40,5 @@ spec:
         image: yg397/social-network-microservices
         command: ["TextService"]
       restartPolicy: Always
+      nodeSelector:
+        hostname: kbs-3
