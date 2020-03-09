@@ -43,4 +43,4 @@ spec:
         - containerPort: 9090
       restartPolicy: Always
       nodeSelector:
-        hostname: kbs-2
+        "kubernetes.io/hostname": "kbs-2"

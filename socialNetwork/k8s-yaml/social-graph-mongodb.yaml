@@ -40,4 +40,4 @@ spec:
         image: mongo
       restartPolicy: Always
       nodeSelector:
-        hostname: kbs-3
+        "kubernetes.io/hostname": "kbs-3"

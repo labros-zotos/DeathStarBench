@@ -41,4 +41,4 @@ spec:
         command: ["UserService"]
       restartPolicy: Always
       nodeSelector:
-        hostname: kbs-3
+        "kubernetes.io/hostname": "kbs-3"

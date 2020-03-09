@@ -52,4 +52,4 @@ spec:
           value: "/"
       restartPolicy: Always
       nodeSelector:
-        hostname: kbs-2
+        "kubernetes.io/hostname": "kbs-2"
