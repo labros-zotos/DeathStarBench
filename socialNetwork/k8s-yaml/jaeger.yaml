@@ -73,4 +73,4 @@ spec:
           value: "9411"
       restartPolicy: Always
       nodeSelector:
-        "kubernetes.io/hostname": "k8s-master"
+        "kubernetes.io/hostname": "kbs-8"
