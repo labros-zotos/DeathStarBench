@@ -40,4 +40,4 @@ spec:
         image: redis
       restartPolicy: Always
       nodeSelector:
-        "kubernetes.io/hostname": "kbs-3"
+        "kubernetes.io/hostname": "kbs-14"

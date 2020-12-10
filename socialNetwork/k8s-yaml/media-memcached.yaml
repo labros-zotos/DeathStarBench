@@ -40,4 +40,4 @@ spec:
         image: memcached
       restartPolicy: Always
       nodeSelector:
-        "kubernetes.io/hostname": "kbs-2"
+        "kubernetes.io/hostname": "kbs-15"
