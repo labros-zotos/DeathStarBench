@@ -39,5 +39,5 @@ spec:
       - name: social-graph-mongodb
         image: mongo
       restartPolicy: Always
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-14"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-14"

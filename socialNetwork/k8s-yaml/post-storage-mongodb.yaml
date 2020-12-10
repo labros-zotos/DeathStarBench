@@ -39,5 +39,5 @@ spec:
       - name: post-storage-mongodb
         image: mongo
       restartPolicy: Always
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-16"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-16"

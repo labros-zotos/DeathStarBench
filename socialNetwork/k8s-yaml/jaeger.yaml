@@ -72,5 +72,5 @@ spec:
         - name: COLLECTOR_ZIPKIN_HTTP_PORT
           value: "9411"
       restartPolicy: Always
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-8"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-8"

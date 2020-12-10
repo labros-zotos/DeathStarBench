@@ -39,5 +39,5 @@ spec:
       - name: media-mongodb
         image: mongo
       restartPolicy: Always
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-15"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-15"

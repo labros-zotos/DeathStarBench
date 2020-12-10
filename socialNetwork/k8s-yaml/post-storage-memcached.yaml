@@ -39,5 +39,5 @@ spec:
       - name: post-storage-memcached
         image: memcached
       restartPolicy: Always
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-16"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-16"

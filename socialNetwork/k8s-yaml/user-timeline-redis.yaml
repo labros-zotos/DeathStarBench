@@ -39,5 +39,5 @@ spec:
       - name: user-timeline-redis
         image: redis
       restartPolicy: Always
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-13"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-13"

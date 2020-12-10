@@ -39,5 +39,5 @@ spec:
       - name: user-memcached
         image: memcached
       restartPolicy: Always
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-14"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-14"

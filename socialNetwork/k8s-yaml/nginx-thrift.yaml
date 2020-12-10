@@ -75,5 +75,5 @@ spec:
         hostPath: 
           path: /home/ubuntu/DeathStarBench/socialNetwork/gen-lua
           type: Directory
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-5"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-5"

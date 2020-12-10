@@ -40,5 +40,5 @@ spec:
         image: yg397/social-network-microservices
         command: ["HomeTimelineService"]
       restartPolicy: Always
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-9"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-9"

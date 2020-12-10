@@ -57,5 +57,5 @@ spec:
         hostPath: 
           path: /home/ubuntu/DeathStarBench/socialNetwork/media-frontend/conf/nginx-k8s.conf
           type: File
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-6"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-6"

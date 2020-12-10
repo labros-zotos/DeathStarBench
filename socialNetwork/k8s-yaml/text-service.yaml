@@ -40,5 +40,5 @@ spec:
         image: yg397/social-network-microservices
         command: ["TextService"]
       restartPolicy: Always
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-8"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-8"

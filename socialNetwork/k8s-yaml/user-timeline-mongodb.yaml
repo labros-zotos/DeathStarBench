@@ -39,5 +39,5 @@ spec:
       - name: user-timeline-mongodb
         image: mongo
       restartPolicy: Always
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-13"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-13"

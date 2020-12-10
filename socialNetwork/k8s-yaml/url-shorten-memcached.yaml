@@ -39,5 +39,5 @@ spec:
       - name: url-shorten-memcached
         image: memcached
       restartPolicy: Always
-      nodeSelector:
-        "kubernetes.io/hostname": "kbs-15"
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-15"
