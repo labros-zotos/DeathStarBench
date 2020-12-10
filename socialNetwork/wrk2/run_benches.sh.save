@@ -1,0 +1,12 @@
+#!/bin/bash
+
+connections=( 50, 200, 300, 500 )
+#reqpersecond=( 10, 100, 250, 500, 1000, 2000 )
+#cluster_ip=10.101.21.23
+
+for i in "${connections[@]"; do
+        for j in "${reqpersecond[@]}"; do
+                echo "{$i}"
+        done
+done
+
