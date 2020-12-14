@@ -20,8 +20,8 @@
 #include "../../gen-cpp/ComposePostService.h"
 #include "../../gen-cpp/SocialGraphService.h"
 #include "../../third_party/PicoSHA2/picosha2.h"
-#include "../ClientPool.h"
-#include "../ThriftClient.h"
+#include "../TracedClientPool.h"
+#include "../TracedThriftClient.h"
 #include "../tracing.h"
 #include "../logger.h"
 
@@ -78,8 +78,8 @@ class UserHandler : public UserServiceIf {
       const std::string &,
       memcached_pool_st *,
       mongoc_client_pool_t *,
-      ClientPool<ThriftClient<ComposePostServiceClient>> *,
-      ClientPool<ThriftClient<SocialGraphServiceClient>> *);
+      TracedClientPool<TracedThriftClient<ComposePostServiceClient>> *,
+      TracedClientPool<TracedThriftClient<SocialGraphServiceClient>> *);
   ~UserHandler() override = default;
   void RegisterUser(
       int64_t,
@@ -122,8 +122,8 @@ class UserHandler : public UserServiceIf {
   std::mutex *_thread_lock;
   memcached_pool_st *_memcached_client_pool;
   mongoc_client_pool_t *_mongodb_client_pool;
-  ClientPool<ThriftClient<ComposePostServiceClient>> *_compose_client_pool;
-  ClientPool<ThriftClient<SocialGraphServiceClient>> *_social_graph_client_pool;
+  TracedClientPool<TracedThriftClient<ComposePostServiceClient>> *_compose_client_pool;
+  TracedClientPool<TracedThriftClient<SocialGraphServiceClient>> *_social_graph_client_pool;
 
 };
 
@@ -133,8 +133,8 @@ UserHandler::UserHandler(
     const std::string &secret,
     memcached_pool_st *memcached_client_pool,
     mongoc_client_pool_t *mongodb_client_pool,
-    ClientPool<ThriftClient<ComposePostServiceClient>> *compose_client_pool,
-    ClientPool<ThriftClient<SocialGraphServiceClient>> *social_graph_client_pool
+    TracedClientPool<TracedThriftClient<ComposePostServiceClient>> *compose_client_pool,
+    TracedClientPool<TracedThriftClient<SocialGraphServiceClient>> *social_graph_client_pool
     ) {
   _thread_lock = thread_lock;
   _machine_id = machine_id;

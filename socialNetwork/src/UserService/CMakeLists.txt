@@ -5,6 +5,7 @@ add_executable(
     ${THRIFT_GEN_CPP_DIR}/ComposePostService.cpp
     ${THRIFT_GEN_CPP_DIR}/social_network_types.cpp
     ${THRIFT_GEN_CPP_DIR}/SocialGraphService.cpp
+    ../ThriftTracer/TTracedProtocol.cpp
 )
 
 
@@ -24,6 +25,8 @@ target_link_libraries(
     ${THRIFT_LIB}
     ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
+    Boost::system
+    Boost::thread
     Boost::log
     Boost::log_setup
     jaegertracing
