@@ -1,7 +1,18 @@
+#include "../utils.h"
 #include "TTracedProtocol.h"
 #include <thrift/protocol/TProtocolDecorator.h>
 #include <iostream>
 #include "udp_client.h"
+
+json config_json;
+if (load_config_file("config/service-config.json", &config_json) != 0) {
+  exit(EXIT_FAILURE);
+}
+
+std::string secret = config_json["secret"];
+
+std::string supervisor_addr = config_json["supervisor-service"]["addr"];
+int supervisor_port = config_json["supervisor-service"]["port"];
 
 namespace apache {
 namespace thrift {
@@ -13,7 +24,7 @@ namespace protocol {
     // Log message to supervisor
     std::cout << "Sending message from " << service_id << " to " << receiver_addr << std::endl;
     boost::asio::io_service io_service;
-    UDPClient client(io_service, "localhost", "1337");
+    UDPClient client(io_service, supervisor_addr, supervisor_port);
 
     client.send("add:"+service_id+":"+receiver_addr);
 

@@ -7,8 +7,18 @@
 #include <boost/tokenizer.hpp>
 #include <iostream>
 #include <string>
+#include "../utils.h"
 #include "UDPClient.h"
 
+json config_json;
+if (load_config_file("config/service-config.json", &config_json) != 0) {
+  exit(EXIT_FAILURE);
+}
+
+std::string secret = config_json["secret"];
+
+std::string supervisor_addr = config_json["supervisor-service"]["addr"];
+int supervisor_port = config_json["supervisor-service"]["port"];
 
 namespace apache {
 namespace thrift {
@@ -159,7 +169,7 @@ public:
         std::cout << "Receiving message from " << tokens[0] << std::endl;
 
         boost::asio::io_service io_service;
-        UDPClient client(io_service, "localhost", "1336");
+        UDPClient client(io_service, supervisor_addr, supervisor_port-1);
 
         client.send(std::to_string(rpc_processed[0])+":proc:"+service_id+":"+tokens[0]);
 

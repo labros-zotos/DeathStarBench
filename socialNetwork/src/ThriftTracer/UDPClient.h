@@ -10,7 +10,7 @@ public:
 	UDPClient(
 			boost::asio::io_service& io_service, 
 			const std::string& host, 
-			const std::string& port
+			int port
 		) : io_service_(io_service), socket_(io_service, udp::endpoint(udp::v4(), 0)) {
 		udp::resolver resolver(io_service_);
 		udp::resolver::query query(udp::v4(), host, port);

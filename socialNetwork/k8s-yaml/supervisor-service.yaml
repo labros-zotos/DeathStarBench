@@ -1,0 +1,49 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: supervisor-service
+  labels:
+    death-star-project: social-network
+    app-name: supervisor-service
+  namespace: social-network
+spec:
+  ports:
+  - port: 1337
+    name: udp1
+    protocol: UDP
+  - port: 1336
+    name: udp2
+    protocol: UDP
+  selector:
+    death-star-project: social-network
+    app-name: supervisor-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: supervisor-service
+  labels:
+    death-star-project: social-network
+    app-name: supervisor-service
+  namespace: social-network
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      death-star-project: social-network
+      app-name: supervisor-service
+  template:
+    metadata:
+      labels: 
+        death-star-project: social-network
+        app-name: supervisor-service
+      name: supervisor-service
+    spec:
+      containers:
+      - name: supervisor-service
+        image: yg397/social-network-microservices
+        command: ["SupervisorService"]
+      restartPolicy: Always
+      # nodeSelector:
+      #   "kubernetes.io/hostname": "kbs-12"
