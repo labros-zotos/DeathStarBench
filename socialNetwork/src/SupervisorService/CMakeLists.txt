@@ -9,6 +9,7 @@ target_include_directories(
 )
 
 target_link_libraries(
+    SupervisorService
     ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
     Boost::system

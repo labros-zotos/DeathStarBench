@@ -8,7 +8,6 @@
 #include "../utils.h"
 #include "../utils_memcached.h"
 #include "../utils_mongodb.h"
-#include "../ThriftTracer/TTracedProcessor.h"
 #include "UserHandler.h"
 
 using apache::thrift::server::TThreadedServer;
@@ -77,17 +76,17 @@ int main(int argc, char *argv[]) {
   }
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
 
-  auto processor = make_shared<::apache::thrift::TTracedProcessor>();
-    processor->registerProcessor( "userService-1", 
-        std::make_shared<UserServiceProcessor>(
-        std::make_shared<UserHandler>(
-            &thread_lock,
-            machine_id,
-            secret,
-            memcached_client_pool,
-            mongodb_client_pool,
-            &compose_post_client_pool,
-            &social_graph_client_pool)))
+  auto processor = std::make_shared<::apache::thrift::TTracedProcessor>();
+  processor->registerProcessor( "userService-1", 
+      std::make_shared<UserServiceProcessor>(
+      std::make_shared<UserHandler>(
+          &thread_lock,
+          machine_id,
+          secret,
+          memcached_client_pool,
+          mongodb_client_pool,
+          &compose_post_client_pool,
+          &social_graph_client_pool)));
 
   TThreadedServer server(
       processor,

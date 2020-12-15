@@ -18,6 +18,7 @@ namespace social_network {
 
 using apache::thrift::protocol::TProtocol;
 using apache::thrift::protocol::TBinaryProtocol;
+using apache::thrift::protocol::TTracedProtocol;
 using apache::thrift::transport::TFramedTransport;
 using apache::thrift::transport::TSocket;
 using apache::thrift::transport::TTransport;
@@ -58,7 +59,7 @@ TracedThriftClient<TTracedThriftClient>::TracedThriftClient(
   _port = port;
   _socket = std::shared_ptr<TTransport>(new TSocket(addr, port));
   _transport = std::shared_ptr<TTransport>(new TFramedTransport(_socket));
-  _protocol = std::shared_ptr<TTracedProtocol>(std::shared_ptr<TProtocol>(new TBinaryProtocol(_transport));, service_id, reciever_id);
+  _protocol = std::make_shared<TTracedProtocol>(std::shared_ptr<TProtocol>(new TBinaryProtocol(_transport)), service_id, receiver_id);
   _client = new TTracedThriftClient(_protocol);
 }
 

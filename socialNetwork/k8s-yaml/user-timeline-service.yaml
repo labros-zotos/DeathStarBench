@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
       - name: user-timeline-service
-        image: yg397/social-network-microservices
+        image: labroszotos/social-microservices
         command: ["UserTimelineService"]
       restartPolicy: Always
       # nodeSelector:

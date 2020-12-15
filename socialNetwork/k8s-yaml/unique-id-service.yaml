@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
       - name: unique-id-service
-        image: yg397/social-network-microservices
+        image: labroszotos/social-microservices
         command: ["UniqueIdService"]
       restartPolicy: Always
       # nodeSelector:

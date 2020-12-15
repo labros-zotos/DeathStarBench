@@ -9,16 +9,7 @@
 #include <string>
 #include "../utils.h"
 #include "UDPClient.h"
-
-json config_json;
-if (load_config_file("config/service-config.json", &config_json) != 0) {
-  exit(EXIT_FAILURE);
-}
-
-std::string secret = config_json["secret"];
-
-std::string supervisor_addr = config_json["supervisor-service"]["addr"];
-int supervisor_port = config_json["supervisor-service"]["port"];
+using namespace social_network;
 
 namespace apache {
 namespace thrift {
@@ -96,6 +87,15 @@ public:
   void registerProcessor(const std::string& _service_id, std::shared_ptr<TProcessor> _processor) {
     service_id = _service_id;
     processor = _processor;
+
+    json config_json;
+    if (load_config_file("config/service-config.json", &config_json) != 0) {
+      exit(EXIT_FAILURE);
+    }
+
+    supervisor_addr = config_json["supervisor-service"]["addr"];
+    supervisor_port = config_json["supervisor-service"]["port"];
+
   }
 
   /**
@@ -169,6 +169,11 @@ public:
         std::cout << "Receiving message from " << tokens[0] << std::endl;
 
         boost::asio::io_service io_service;
+        json config_json;
+        if (load_config_file("config/service-config.json", &config_json) != 0) {
+          exit(EXIT_FAILURE);
+        }
+
         UDPClient client(io_service, supervisor_addr, supervisor_port-1);
 
         client.send(std::to_string(rpc_processed[0])+":proc:"+service_id+":"+tokens[0]);
@@ -189,6 +194,8 @@ public:
 private:
   std::string service_id;
   std::shared_ptr<TProcessor> processor;
+  std::string supervisor_addr;
+  int supervisor_port;
   // Keep count of how many requests were proccessed from each microservice.
   int rpc_processed[2] = {0};
 };

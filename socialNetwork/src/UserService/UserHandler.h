@@ -22,6 +22,7 @@
 #include "../../third_party/PicoSHA2/picosha2.h"
 #include "../TracedClientPool.h"
 #include "../TracedThriftClient.h"
+#include "../ThriftTracer/TTracedProcessor.h"
 #include "../tracing.h"
 #include "../logger.h"
 

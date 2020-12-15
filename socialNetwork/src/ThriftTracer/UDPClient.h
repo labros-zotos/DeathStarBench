@@ -13,7 +13,7 @@ public:
 			int port
 		) : io_service_(io_service), socket_(io_service, udp::endpoint(udp::v4(), 0)) {
 		udp::resolver resolver(io_service_);
-		udp::resolver::query query(udp::v4(), host, port);
+		udp::resolver::query query(udp::v4(), host, std::to_string(port));
 		udp::resolver::iterator iter = resolver.resolve(query);
 		endpoint_ = *iter;
 	}

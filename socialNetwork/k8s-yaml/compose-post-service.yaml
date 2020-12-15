@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
       - name: compose-post-service
-        image: yg397/social-network-microservices
+        image: labroszotos/social-microservices
         command: ["ComposePostService"]
       restartPolicy: Always
       # nodeSelector:
