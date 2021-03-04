@@ -145,7 +145,7 @@ services:
     logging:
       options:
         max-size: 50m
-    cpuset: "0"
+    cpuset: "8"
 
   memcached-profile:
     image: memcached
@@ -160,7 +160,7 @@ services:
     logging:
       options:
         max-size: 50m
-    cpuset: "0"
+    cpuset: "9"
 
   memcached-reserve:
     image: memcached
@@ -175,7 +175,7 @@ services:
     logging:
       options:
         max-size: 50m
-    cpuset: "0"
+    cpuset: "10"
 
   mongodb-geo:
     image: mongo
