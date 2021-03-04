@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: media-service
+  name: media-service
+spec:
+  containers:
+    - command:
+        - MediaService
+      image: yg397/social-network-microservices
+      name: media-service
+      resources: {}
+  hostname: media-service
+  restartPolicy: Never
+status: {}

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: media-memcached
+  name: media-memcached
+spec:
+  containers:
+    - image: memcached
+      name: media-memcached
+      resources: {}
+  hostname: media-memcached
+  restartPolicy: Never
+status: {}

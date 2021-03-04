@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: write-home-timeline-rabbitmq
+  name: write-home-timeline-rabbitmq
+spec:
+  containers:
+    - env:
+        - name: RABBITMQ_DEFAULT_VHOST
+          value: /
+        - name: RABBITMQ_ERLANG_COOKIE
+          value: WRITE-HOME-TIMELINE-RABBITMQ
+      image: rabbitmq
+      name: write-home-timeline-rabbitmq
+      resources: {}
+  hostname: write-home-timeline-rabbitmq
+  restartPolicy: Never
+status: {}

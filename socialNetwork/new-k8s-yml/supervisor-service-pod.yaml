@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: supervisor-service
+  name: supervisor-service
+spec:
+  containers:
+    - command:
+        - SupervisorService
+      image: yg397/social-network-microservices
+      name: supervisor-service
+      ports:
+        - containerPort: 1337
+          protocol: UDP
+        - containerPort: 1336
+          protocol: UDP
+      resources: {}
+  hostname: supervisor
+  restartPolicy: Never
+status: {}

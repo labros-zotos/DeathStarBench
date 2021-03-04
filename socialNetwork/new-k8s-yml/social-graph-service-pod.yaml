@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: social-graph-service
+  name: social-graph-service
+spec:
+  containers:
+    - command:
+        - SocialGraphService
+      image: yg397/social-network-microservices
+      name: social-graph-service
+      resources: {}
+  hostname: social-graph-service
+  restartPolicy: Never
+status: {}

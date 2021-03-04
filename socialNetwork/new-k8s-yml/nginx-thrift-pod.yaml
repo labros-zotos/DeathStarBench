@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx-thrift
+  name: nginx-thrift
+spec:
+  containers:
+    - image: yg397/openresty-thrift:xenial
+      name: nginx-thrift
+      ports:
+        - containerPort: 8080
+      resources: {}
+      volumeMounts:
+        - mountPath: /usr/local/openresty/nginx/lua-scripts
+          name: nginx-thrift-claim0
+        - mountPath: /usr/local/openresty/nginx/pages
+          name: nginx-thrift-claim1
+        - mountPath: /usr/local/openresty/nginx/conf/nginx.conf
+          name: nginx-thrift-claim2
+        - mountPath: /usr/local/openresty/nginx/jaeger-config.json
+          name: nginx-thrift-claim3
+        - mountPath: /gen-lua
+          name: nginx-thrift-claim4
+  hostname: nginx-thrift
+  restartPolicy: Never
+  volumes:
+    - name: nginx-thrift-claim0
+      persistentVolumeClaim:
+        claimName: nginx-thrift-claim0
+    - name: nginx-thrift-claim1
+      persistentVolumeClaim:
+        claimName: nginx-thrift-claim1
+    - name: nginx-thrift-claim2
+      persistentVolumeClaim:
+        claimName: nginx-thrift-claim2
+    - name: nginx-thrift-claim3
+      persistentVolumeClaim:
+        claimName: nginx-thrift-claim3
+    - name: nginx-thrift-claim4
+      persistentVolumeClaim:
+        claimName: nginx-thrift-claim4
+status: {}

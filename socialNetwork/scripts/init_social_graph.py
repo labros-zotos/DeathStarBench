@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
   if len(sys.argv) < 2:
     filename = "datasets/social-graph/socfb-Reed98/socfb-Reed98.mtx"
-    cluster_ip = "10.0.1.0"
+    cluster_ip = "10.0.1.90"
     cluster_port = "8080"
   else:
     args=parser.parse_args()

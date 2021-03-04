@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: media-mongodb
+  name: media-mongodb
+spec:
+  containers:
+    - image: mongo
+      name: media-mongodb
+      resources: {}
+  hostname: media-mongodb
+  restartPolicy: Never
+status: {}

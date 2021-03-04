@@ -185,9 +185,17 @@ public:
                           new protocol::StoredMessageProtocol(in, tokens[1], type, seqid)),
                       out,
                       connectionContext);
+    } else if (tokens.size() < 2) {
+        // Let the processor registered for this service name
+        // process the message.
+        return processor
+            ->process(std::shared_ptr<protocol::TProtocol>(
+                          new protocol::StoredMessageProtocol(in, name, type, seqid)),
+                      out,
+                      connectionContext);
     } else {
-		throw protocol_error(in, out, name, seqid,
-		    "Wrong number of tokens.");
+        throw protocol_error(in, out, name, seqid,
+            "Wrong number of tokens.");
     }
   }
 

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: write-home-timeline-service
+  name: write-home-timeline-service
+spec:
+  containers:
+    - command:
+        - WriteHomeTimelineService
+      image: yg397/social-network-microservices
+      name: write-home-timeline-service
+      resources: {}
+  hostname: write-home-timeline-service
+  restartPolicy: Never
+status: {}

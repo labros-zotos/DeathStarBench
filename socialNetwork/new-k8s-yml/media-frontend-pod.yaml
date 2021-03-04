@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: media-frontend
+  name: media-frontend
+spec:
+  containers:
+    - image: yg397/media-frontend:xenial
+      name: media-frontend
+      ports:
+        - containerPort: 8080
+      resources: {}
+      volumeMounts:
+        - mountPath: /usr/local/openresty/nginx/lua-scripts
+          name: media-frontend-claim0
+        - mountPath: /usr/local/openresty/nginx/conf/nginx.conf
+          name: media-frontend-claim1
+  hostname: media-frontend
+  restartPolicy: Never
+  volumes:
+    - name: media-frontend-claim0
+      persistentVolumeClaim:
+        claimName: media-frontend-claim0
+    - name: media-frontend-claim1
+      persistentVolumeClaim:
+        claimName: media-frontend-claim1
+status: {}

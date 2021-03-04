@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: compose-post-service
+  name: compose-post-service
+spec:
+  containers:
+    - command:
+        - ComposePostService
+      image: yg397/social-network-microservices
+      name: compose-post-service
+      resources: {}
+  hostname: compose-post-service
+  restartPolicy: Never
+status: {}

@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: supervisor-service
+  name: supervisor-service
+spec:
+  ports:
+    - name: "1337"
+      port: 1337
+      protocol: UDP
+      targetPort: 1337
+    - name: "1336"
+      port: 1336
+      protocol: UDP
+      targetPort: 1336
+  selector:
+    io.kompose.service: supervisor-service
+status:
+  loadBalancer: {}
