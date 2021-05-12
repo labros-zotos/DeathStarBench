@@ -14,6 +14,11 @@
 #include "../../gen-cpp/SocialGraphService.h"
 #include "../../gen-cpp/UserService.h"
 #include "../ClientPool.h"
+
+#include "../TracedClientPool.h"
+#include "../TracedThriftClient.h"
+#include "../ThriftTracer/TTracedProcessor.h"
+
 #include "../logger.h"
 #include "../tracing.h"
 #include "../RedisClient.h"
@@ -30,7 +35,7 @@ class SocialGraphHandler : public SocialGraphServiceIf {
   SocialGraphHandler(
       mongoc_client_pool_t *,
       ClientPool<RedisClient> *,
-      ClientPool<ThriftClient<UserServiceClient>> *);
+      TracedClientPool<TracedThriftClient<UserServiceClient>> *);
   ~SocialGraphHandler() override = default;
   void GetFollowers(std::vector<int64_t> &, int64_t, int64_t,
                     const std::map<std::string, std::string> &) override;
@@ -51,13 +56,13 @@ class SocialGraphHandler : public SocialGraphServiceIf {
  private:
   mongoc_client_pool_t *_mongodb_client_pool;
   ClientPool<RedisClient> *_redis_client_pool;
-  ClientPool<ThriftClient<UserServiceClient>> *_user_service_client_pool;
+  TracedClientPool<TracedThriftClient<UserServiceClient>> *_user_service_client_pool;
 };
 
 SocialGraphHandler::SocialGraphHandler(
     mongoc_client_pool_t *mongodb_client_pool,
     ClientPool<RedisClient> *redis_client_pool,
-    ClientPool<ThriftClient<UserServiceClient>> *user_service_client_pool) {
+    TracedClientPool<TracedThriftClient<UserServiceClient>> *user_service_client_pool) {
   _mongodb_client_pool = mongodb_client_pool;
   _redis_client_pool = redis_client_pool;
   _user_service_client_pool = user_service_client_pool;

@@ -17,6 +17,8 @@
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/tokenizer.hpp>
+#include <pqxx/pqxx>
+
 
 #define ROW 3
 #define COL 3
@@ -25,6 +27,10 @@ using boost::asio::ip::udp;
 int queues_table[ROW][COL] = {0};
 int processed_table[ROW][COL] = {0};
 
+std::string supervisor_db_addr = config_json["supervisor-database"]["addr"];
+int supervisor_db_port = config_json["supervisor-database"]["port"];
+pqxx::connection c{"postgresql://postgres:postgres@"+supervisor_db_addr+":"+to_string(supervisor_db_port)+"/postgres"};
+pqxx::work txn{c};
 
 void printMatrix(int mat[ROW][COL])
 {
@@ -82,6 +88,7 @@ private:
     if (tokens.size() == 4) {
       int processed_msgs = std::stoi(tokens[0]);
       std::vector<std::string> proc_service_tokens, sender_service_tokens;
+      std::cout << "4 Tokens" << std::endl;
 
       // Extract processor-service index
       boost::tokenizer<boost::char_separator<char>> proc_index_tok(tokens[2], boost::char_separator<char>("-"));
@@ -91,7 +98,7 @@ private:
       boost::tokenizer<boost::char_separator<char>>  sender_index_tok(tokens[3], boost::char_separator<char>("-"));
       std::copy(sender_index_tok.begin(), sender_index_tok.end(), std::back_inserter(sender_service_tokens));
       int sender_index = std::stoi(sender_service_tokens[1])-1;
-
+      std::cout << "Pre-update" << std::endl;
       // update queue entry
       mtx_.lock();
       queues_table[sender_index][proc_index] = queues_table[sender_index][proc_index]  
@@ -100,6 +107,7 @@ private:
       // update processed table
       processed_table[proc_index][sender_index] = std::max((int)processed_table[proc_index][sender_index], processed_msgs);
       mtx_.unlock();
+      std::cout << "Post-update" << std::endl;
 
       mtx_.lock();
       std::cout << "Q" << std::endl;
@@ -128,7 +136,6 @@ private:
     
     if (!error || error == boost::asio::error::message_size)
     {
-
       boost::shared_ptr<std::string> message(
           new std::string(make_daytime_string()));
 
@@ -162,6 +169,7 @@ void add_thread() {
   }
   catch (std::exception& e)
   {
+    std::cout << "Error for ADD";
     std::cerr << e.what() << std::endl;
   }
 }
@@ -175,13 +183,20 @@ void remove_thread() {
   }
   catch (std::exception& e)
   {
+    std::cout << "Error for PROC";
     std::cerr << e.what() << std::endl;
   }
 }
 
+void db_worker_proc() {
+
+};
+
+
 int main()
 {
   boost::thread add_t{add_thread}, rm_t{remove_thread};
+  boost::thread db_manager();
   add_t.join();
   rm_t.join();
   

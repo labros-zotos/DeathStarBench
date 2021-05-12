@@ -103,5 +103,9 @@
   "supervisor-service": {
     "addr": "supervisor-service",
     "port": 1337
+  },
+  "supervisor-database": {
+    "addr": "supervisor-database",
+    "port": 5432
   }
 }

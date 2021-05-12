@@ -4,7 +4,6 @@
 #include <thrift/transport/TBufferTransports.h>
 #include <signal.h>
 
-
 #include "../utils.h"
 #include "../utils_memcached.h"
 #include "../utils_mongodb.h"
@@ -86,7 +85,8 @@ int main(int argc, char *argv[]) {
           memcached_client_pool,
           mongodb_client_pool,
           &compose_post_client_pool,
-          &social_graph_client_pool)));
+          &social_graph_client_pool))
+  );
 
   TThreadedServer server(
       processor,

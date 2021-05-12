@@ -44,8 +44,8 @@ int main(int argc, char *argv[]) {
   }
   ClientPool<RedisClient> redis_client_pool("redis", redis_addr, redis_port,
       0, 128, 1000);
-  ClientPool<ThriftClient<UserServiceClient>> user_client_pool(
-      "social-graph", user_addr, user_port, 0, 128, 1000);
+  TracedClientPool<TracedThriftClient<UserServiceClient>> user_client_pool(
+      "social-graph", user_addr, user_port, 0, 128, 1000, "socialGraphService-2", "userService-1");
 
   mongoc_client_t *mongodb_client = mongoc_client_pool_pop(mongodb_client_pool);
   if (!mongodb_client) {
@@ -62,12 +62,17 @@ int main(int argc, char *argv[]) {
   }
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
 
-  TThreadedServer server(
-      std::make_shared<SocialGraphServiceProcessor>(
+  auto processor = std::make_shared<::apache::thrift::TTracedProcessor>();
+  processor->registerProcessor( "socialGraphService-2", 
+    std::make_shared<SocialGraphServiceProcessor>(
           std::make_shared<SocialGraphHandler>(
               mongodb_client_pool,
               &redis_client_pool,
-              &user_client_pool)),
+              &user_client_pool))
+  );
+
+  TThreadedServer server(
+      processor,
       std::make_shared<TServerSocket>("0.0.0.0", port),
       std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>()

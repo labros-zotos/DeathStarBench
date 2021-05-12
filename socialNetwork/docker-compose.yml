@@ -15,7 +15,7 @@ services:
     hostname: social-graph-service
 #    ports:
 #      - 10000:9090
-    restart: "no"
+    restart: on-failure
     entrypoint: SocialGraphService
 
   social-graph-mongodb:
@@ -23,19 +23,19 @@ services:
     hostname: social-graph-mongodb
 #    ports:
 #      - 27018:27017
-    restart: "no"
+    restart: on-failure
 
   social-graph-redis:
     image: redis
     hostname: social-graph-redis
 #    ports:
 #      - 6380:6379
-    restart: "no"
+    restart: on-failure
 
   write-home-timeline-service:
     image: labroszotos/social-microservices
     hostname: write-home-timeline-service
-    restart: "no"
+    restart: on-failure
     entrypoint: WriteHomeTimelineService
     depends_on:
       - write-home-timeline-rabbitmq
@@ -49,21 +49,21 @@ services:
 #    ports:
 #      - 15672:15672
 #      - 5672:5672
-    restart: "no"
+    restart: on-failure
 
   home-timeline-redis:
     image: redis
     hostname: home-timeline-redis
 #    ports:
 #      - 6381:6379
-    restart: "no"
+    restart: on-failure
 
   compose-post-service:
     image: labroszotos/social-microservices
     hostname: compose-post-service
 #    ports:
 #      - 10001:9090
-    restart: "no"
+    restart: on-failure
     entrypoint: ComposePostService
     depends_on:
       - write-home-timeline-rabbitmq
@@ -73,14 +73,14 @@ services:
     hostname: compose-post-redis
 #    ports:
 #      - 6382:6379
-    restart: "no"
+    restart: on-failure
 
   post-storage-service:
     image: labroszotos/social-microservices
     hostname: post-storage-service
     ports:
       - 10002:9090
-    restart: "no"
+    restart: on-failure
     entrypoint: PostStorageService
 
   post-storage-memcached:
@@ -88,21 +88,21 @@ services:
     hostname: post-storage-memcached
 #    ports:
 #      - 11212:11211
-    restart: "no"
+    restart: on-failure
 
   post-storage-mongodb:
     image: mongo
     hostname: post-storage-mongodb
 #    ports:
 #      - 27019:27017
-    restart: "no"
+    restart: on-failure
 
   user-timeline-service:
     image: labroszotos/social-microservices
     hostname: user-timeline-service
 #    ports:
 #      - 10003:9090
-    restart: "no"
+    restart: on-failure
     entrypoint: UserTimelineService
 
   user-timeline-redis:
@@ -110,21 +110,21 @@ services:
     hostname: user-timeline-redis
 #    ports:
 #      - 6383:6379
-    restart: "no"
+    restart: on-failure
 
   user-timeline-mongodb:
     image: mongo
     hostname: user-timeline-mongodb
 #    ports:
 #      - 27020:27017
-    restart: "no"
+    restart: on-failure
 
   url-shorten-service:
     image: labroszotos/social-microservices
     hostname: url-shorten-service
 #    ports:
 #      - 10004:9090
-    restart: "no"
+    restart: on-failure
     entrypoint: UrlShortenService
 
   url-shorten-memcached:
@@ -132,21 +132,21 @@ services:
     hostname: url-shorten-memcached
 #    ports:
 #      - 11213:11211
-    restart: "no"
+    restart: on-failure
 
   url-shorten-mongodb:
     image: mongo
     hostname: url-shorten-mongodb
 #    ports:
 #      - 27021:27017
-    restart: "no"
+    restart: on-failure
 
   user-service:
     image: labroszotos/social-microservices
     hostname: user-service
 #    ports:
 #      - 10005:9090
-    restart: "no"
+    restart: on-failure
     entrypoint: UserService
 
   user-memcached:
@@ -154,21 +154,21 @@ services:
     hostname: user-memcached
 #    ports:
 #      - 11214:11211
-    restart: "no"
+    restart: on-failure
 
   user-mongodb:
     image: mongo
     hostname: user-mongodb
 #    ports:
 #      - 27023:27017
-    restart: "no"
+    restart: on-failure
 
   media-service:
     image: labroszotos/social-microservices
     hostname: media-service
 #    ports:
 #      - 10006:9090
-    restart: "no"
+    restart: on-failure
     entrypoint: MediaService
 
   media-memcached:
@@ -176,21 +176,21 @@ services:
     hostname: media-memcached
 #    ports:
 #      - 11215:11211
-    restart: "no"
+    restart: on-failure
 
   media-mongodb:
     image: mongo
     hostname: media-mongodb
 #    ports:
 #      - 27024:27017
-    restart: "no"
+    restart: on-failure
 
   text-service:
     image: labroszotos/social-microservices
     hostname: text-service
 #    ports:
 #      - 10007:9090
-    restart: "no"
+    restart: on-failure
     entrypoint: TextService
 
   unique-id-service:
@@ -198,7 +198,7 @@ services:
     hostname: unique-id-service
 #    ports:
 #      - 10008:9090
-    restart: "no"
+    restart: on-failure
     entrypoint: UniqueIdService
 
   user-mention-service:
@@ -206,7 +206,7 @@ services:
     hostname: user-mention-service
 #    ports:
 #      - 10009:9090
-    restart: "no"
+    restart: on-failure
     entrypoint: UserMentionService
 
   home-timeline-service:
@@ -214,7 +214,7 @@ services:
     hostname: home-timeline-service
 #    ports:
 #      - 10010:9090
-    restart: "no"
+    restart: on-failure
     entrypoint: HomeTimelineService
 
   nginx-thrift:
@@ -222,7 +222,7 @@ services:
     hostname: nginx-thrift
     ports:
       - 8080:8080
-    restart: "no"
+    restart: on-failure
     volumes:
       - ./nginx-web-server/lua-scripts:/usr/local/openresty/nginx/lua-scripts
       - ./nginx-web-server/pages:/usr/local/openresty/nginx/pages
@@ -235,7 +235,7 @@ services:
     hostname: media-frontend
     ports:
       - 8081:8080
-    restart: "no"
+    restart: on-failure
     volumes:
       - ./media-frontend/lua-scripts:/usr/local/openresty/nginx/lua-scripts
       - ./media-frontend/conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
@@ -251,15 +251,32 @@ services:
       - 16686:16686
 #      - 14268:14268
 #      - 9411:9411
-    restart: "no"
+    restart: on-failure
     environment:
       - COLLECTOR_ZIPKIN_HTTP_PORT=9411
 
   supervisor-service:
     image: labroszotos/social-microservices
-    hostname: supervisor
     ports:
       - 1337:1337/udp
       - 1336:1336/udp
-    restart: "no"
+    restart: on-failure
     entrypoint: SupervisorService
+
+  supervisor-database:
+    image: postgres:latest
+    hostname: supervisor-database
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '5438:5432'
+    volumes: 
+      - ./supervisor-data:/var/lib/postgresql/data
+      # copy the sql script to create tables
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql

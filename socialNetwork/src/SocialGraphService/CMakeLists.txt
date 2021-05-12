@@ -4,6 +4,7 @@ add_executable(
     ${THRIFT_GEN_CPP_DIR}/SocialGraphService.cpp
     ${THRIFT_GEN_CPP_DIR}/UserService.cpp
     ${THRIFT_GEN_CPP_DIR}/social_network_types.cpp
+    ../ThriftTracer/TTracedProtocol.cpp
 )
 
 target_include_directories(
