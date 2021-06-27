@@ -12,6 +12,11 @@
 #include "../logger.h"
 #include "../tracing.h"
 #include "../ClientPool.h"
+
+#include "../TracedClientPool.h"
+#include "../TracedThriftClient.h"
+#include "../ThriftTracer/TTracedProcessor.h"
+
 #include "../RedisClient.h"
 #include "../ThriftClient.h"
 
@@ -22,7 +27,7 @@ class UserTimelineHandler : public UserTimelineServiceIf {
   UserTimelineHandler(
       ClientPool<RedisClient> *,
       mongoc_client_pool_t *,
-      ClientPool<ThriftClient<PostStorageServiceClient>> *);
+      TracedClientPool<TracedThriftClient<PostStorageServiceClient>> *);
   ~UserTimelineHandler() override = default;
 
   void WriteUserTimeline(int64_t req_id, int64_t post_id, int64_t user_id,
@@ -35,13 +40,13 @@ class UserTimelineHandler : public UserTimelineServiceIf {
  private:
   ClientPool<RedisClient> *_redis_client_pool;
   mongoc_client_pool_t *_mongodb_client_pool;
-  ClientPool<ThriftClient<PostStorageServiceClient>> *_post_client_pool;
+  TracedClientPool<TracedThriftClient<PostStorageServiceClient>> *_post_client_pool;
 };
 
 UserTimelineHandler::UserTimelineHandler(
     ClientPool<RedisClient> *redis_pool,
     mongoc_client_pool_t *mongodb_pool,
-    ClientPool<ThriftClient<PostStorageServiceClient>> *post_client_pool) {
+    TracedClientPool<TracedThriftClient<PostStorageServiceClient>> *post_client_pool) {
   _redis_client_pool = redis_pool;
   _mongodb_client_pool = mongodb_pool;
   _post_client_pool = post_client_pool;

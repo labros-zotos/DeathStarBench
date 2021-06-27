@@ -13,6 +13,11 @@
 #include "../../gen-cpp/PostStorageService.h"
 #include "../../gen-cpp/UserTimelineService.h"
 #include "../ClientPool.h"
+
+#include "../TracedClientPool.h"
+#include "../TracedThriftClient.h"
+#include "../ThriftTracer/TTracedProcessor.h"
+
 #include "../logger.h"
 #include "../tracing.h"
 #include "../RedisClient.h"
@@ -32,8 +37,8 @@ class ComposePostHandler : public ComposePostServiceIf {
  public:
   ComposePostHandler(
       ClientPool<RedisClient> *,
-      ClientPool<ThriftClient<PostStorageServiceClient>> *,
-      ClientPool<ThriftClient<UserTimelineServiceClient>> *,
+      TracedClientPool<TracedThriftClient<PostStorageServiceClient>> *,
+      TracedClientPool<TracedThriftClient<UserTimelineServiceClient>> *,
       ClientPool<RabbitmqClient> *rabbitmq_client_pool);
   ~ComposePostHandler() override = default;
 
@@ -59,9 +64,9 @@ class ComposePostHandler : public ComposePostServiceIf {
 
  private:
   ClientPool<RedisClient> *_redis_client_pool;
-  ClientPool<ThriftClient<PostStorageServiceClient>>
+  TracedClientPool<TracedThriftClient<PostStorageServiceClient>>
       *_post_storage_client_pool;
-  ClientPool<ThriftClient<UserTimelineServiceClient>>
+  TracedClientPool<TracedThriftClient<UserTimelineServiceClient>>
       *_user_timeline_client_pool;
   ClientPool<RabbitmqClient> *_rabbitmq_client_pool;
   std::exception_ptr _rabbitmq_teptr;
@@ -87,9 +92,9 @@ class ComposePostHandler : public ComposePostServiceIf {
 
 ComposePostHandler::ComposePostHandler(
     ClientPool<social_network::RedisClient> * redis_client_pool,
-    ClientPool<social_network::ThriftClient<
+    TracedClientPool<social_network::TracedThriftClient<
         PostStorageServiceClient>> *post_storage_client_pool,
-    ClientPool<social_network::ThriftClient<
+    TracedClientPool<social_network::TracedThriftClient<
         UserTimelineServiceClient>> *user_timeline_client_pool,
     ClientPool<RabbitmqClient> *rabbitmq_client_pool) {
   _redis_client_pool = redis_client_pool;

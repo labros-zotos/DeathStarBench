@@ -3,7 +3,6 @@ add_executable(
     SupervisorService.cpp
 )
 
-
 target_include_directories(
     SupervisorService PRIVATE
 )
@@ -16,6 +15,8 @@ target_link_libraries(
     Boost::thread
     Boost::log
     Boost::log_setup
+    ${PQXX_LIB}
+    ${PQ_LIB}
 )
 
 install(TARGETS SupervisorService DESTINATION ./)

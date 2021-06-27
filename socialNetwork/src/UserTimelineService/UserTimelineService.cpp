@@ -52,9 +52,9 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  ClientPool<ThriftClient<PostStorageServiceClient>>
+  TracedClientPool<TracedThriftClient<PostStorageServiceClient>>
       post_storage_client_pool("post-storage-client", post_storage_addr,
-                               post_storage_port, 0, 128, 1000);
+                               post_storage_port, 0, 128, 1000, "userTimelineService-4", "postStorageService-5");
 
   mongoc_client_t *mongodb_client = mongoc_client_pool_pop(mongodb_client_pool);
   if (!mongodb_client) {
@@ -71,11 +71,16 @@ int main(int argc, char *argv[]) {
   }
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
 
-  TThreadedServer server (
-      std::make_shared<UserTimelineServiceProcessor>(
+  auto processor = std::make_shared<::apache::thrift::TTracedProcessor>();
+  processor->registerProcessor( "userTimelineService-4", 
+    std::make_shared<UserTimelineServiceProcessor>(
           std::make_shared<UserTimelineHandler>(
               &redis_client_pool, mongodb_client_pool,
-              &post_storage_client_pool)),
+              &post_storage_client_pool))
+  );
+
+  TThreadedServer server (
+      processor,
       std::make_shared<TServerSocket>("0.0.0.0", port),
       std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>()

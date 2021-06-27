@@ -15,6 +15,10 @@
 #include "../logger.h"
 #include "../tracing.h"
 
+#include "../TracedClientPool.h"
+#include "../TracedThriftClient.h"
+#include "../ThriftTracer/TTracedProcessor.h"
+
 namespace social_network {
 using json = nlohmann::json;
 

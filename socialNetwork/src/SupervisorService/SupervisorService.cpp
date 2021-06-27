@@ -18,7 +18,7 @@
 #include <boost/thread.hpp>
 #include <boost/tokenizer.hpp>
 #include <pqxx/pqxx>
-
+#include "../utils.h"
 
 #define ROW 3
 #define COL 3
@@ -27,10 +27,10 @@ using boost::asio::ip::udp;
 int queues_table[ROW][COL] = {0};
 int processed_table[ROW][COL] = {0};
 
-std::string supervisor_db_addr = config_json["supervisor-database"]["addr"];
-int supervisor_db_port = config_json["supervisor-database"]["port"];
-pqxx::connection c{"postgresql://postgres:postgres@"+supervisor_db_addr+":"+to_string(supervisor_db_port)+"/postgres"};
-pqxx::work txn{c};
+social_network::json config_json;
+
+std::string supervisor_db_addr;
+int supervisor_db_port;
 
 void printMatrix(int mat[ROW][COL])
 {
@@ -57,10 +57,20 @@ public:
   udp_server(boost::asio::io_service& io_service, int port)
     : socket_(io_service, udp::endpoint(udp::v4(), port))
   {
+    // intialize database connection
+    try {
+      conn_ = new  pqxx::connection("postgresql://postgres:postgres@"+supervisor_db_addr+":"+std::to_string(supervisor_db_port)+"/postgres");
+      conn_->prepare("insert_to_thrift_events", "insert into thrift_events (event_type, logged_at, sender_id, receiver_id, processed_count) values ($1, $2, $3, $4, $5)");
+    } catch (const std::exception &e) {
+      std::cout << "Error on DB connect";
+      std::cerr << e.what() << std::endl;
+    }
     start_receive();
   }
 
 private:
+  pqxx::connection* conn_;
+
   void start_receive()
   {
     socket_.async_receive_from(
@@ -75,6 +85,11 @@ private:
   {
     std::string msg = std::string(reinterpret_cast<const char*>(recv_buffer_.data()), static_cast<int>(bytes_transferred));
     std::cout << msg << std::endl;
+
+    // Get current timestamp
+    struct timeval time_now{};
+    gettimeofday(&time_now, nullptr);
+    std::time_t time_ms = (time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);
 
     // Extract the service name
     boost::tokenizer<boost::char_separator<char>> tok(msg, boost::char_separator<char>(":"));
@@ -109,12 +124,23 @@ private:
       mtx_.unlock();
       std::cout << "Post-update" << std::endl;
 
-      mtx_.lock();
-      std::cout << "Q" << std::endl;
-      printMatrix(queues_table);
-      std::cout << "P" << std::endl;
-      printMatrix(processed_table);
-      mtx_.unlock();
+      // Add api call to the database(log)
+      try {
+        pqxx::work txn_0(*conn_);
+        txn_0.prepared("insert_to_thrift_events")(0)(time_ms)(tokens[2])(tokens[3])(processed_table[proc_index][sender_index]).exec();
+        txn_0.commit();
+        std::cout << "Event insert successful" << std::endl;
+      } catch (const std::exception &e) {
+        std::cout << "Error on DB connect" << std::endl;
+        std::cerr << e.what() << std::endl;
+      }
+      // Print queue and proccessed calls tables
+      // mtx_.lock();
+      // std::cout << "Q" << std::endl;
+      // printMatrix(queues_table);
+      // std::cout << "P" << std::endl;
+      // printMatrix(processed_table);
+      // mtx_.unlock();
 
     } else if (tokens.size() == 3) {
       std::vector<std::string> proc_service_tokens, sender_service_tokens;
@@ -127,6 +153,17 @@ private:
       boost::tokenizer<boost::char_separator<char>>  sender_index_tok(tokens[1], boost::char_separator<char>("-"));
       std::copy(sender_index_tok.begin(), sender_index_tok.end(), std::back_inserter(sender_service_tokens));
       int sender_index = std::stoi(sender_service_tokens[1])-1;
+
+      // Add api call to the database(log)
+      try {
+        pqxx::work txn_1(*conn_);
+        txn_1.prepared("insert_to_thrift_events")(1)(time_ms)(tokens[1])(tokens[2])(NULL).exec();
+        txn_1.commit();
+        std::cout << "Event insert successful" << std::endl;
+      } catch (const std::exception &e) {
+        std::cout << "Error on DB connect" << std::endl;
+        std::cerr << e.what() << std::endl;
+      }
 
       // update queue entry
       mtx_.lock();
@@ -151,8 +188,7 @@ private:
   void handle_send(boost::shared_ptr<std::string> /*message*/,
       const boost::system::error_code& /*error*/,
       std::size_t /*bytes_transferred*/)
-  {
-  }
+  {  }
 
   udp::socket socket_;
   udp::endpoint remote_endpoint_;
@@ -195,6 +231,14 @@ void db_worker_proc() {
 
 int main()
 {
+
+  if (social_network::load_config_file("config/service-config.json", &config_json) != 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  supervisor_db_addr = config_json["supervisor-database"]["addr"];
+  supervisor_db_port = config_json["supervisor-database"]["port"];
+
   boost::thread add_t{add_thread}, rm_t{remove_thread};
   boost::thread db_manager();
   add_t.join();

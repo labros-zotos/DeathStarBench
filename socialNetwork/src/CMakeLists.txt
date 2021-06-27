@@ -1,6 +1,7 @@
 include("../cmake/Findlibmemcached.cmake")
 include("../cmake/Findthrift.cmake")
 include("../cmake/FindLibevent.cmake")
+#include("../cmake/FindPQXX.cmake")
 
 find_package(libmongoc-1.0 1.13 REQUIRED)
 find_package(nlohmann_json 3.5.0 REQUIRED)
@@ -14,6 +15,9 @@ if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
   link_directories(${Boost_LIBRARY_DIRS})
 endif()
+
+find_library(PQXX_LIB pqxx)
+find_library(PQ_LIB pq)
 
 #set(POCO_PREFIX      "/usr/local")
 #set(POCO_INCLUDE_DIR "${POCO_PREFIX}/include")

@@ -43,23 +43,28 @@ int main(int argc, char *argv[]) {
 
   ClientPool<RedisClient> redis_client_pool("redis", redis_addr, redis_port,
                                             0, 128, 1000);
-  ClientPool<ThriftClient<PostStorageServiceClient>>
+  TracedClientPool<TracedThriftClient<PostStorageServiceClient>>
       post_storage_client_pool("post-storage-client", post_storage_addr,
-                               post_storage_port, 0, 128, 1000);
-  ClientPool<ThriftClient<UserTimelineServiceClient>>
+                               post_storage_port, 0, 128, 1000, "composePostService-3", "postStorageService-5");
+  TracedClientPool<TracedThriftClient<UserTimelineServiceClient>>
       user_timeline_client_pool("user-timeline-client", user_timeline_addr,
-                                user_timeline_port, 0, 128, 1000);
+                                user_timeline_port, 0, 128, 1000, "composePostService-3", "userTimelineService-4");
 
   ClientPool<RabbitmqClient> rabbitmq_client_pool("rabbitmq", rabbitmq_addr,
       rabbitmq_port, 0, 128, 1000);
 
-  TThreadedServer server(
-      std::make_shared<ComposePostServiceProcessor>(
+  auto processor = std::make_shared<::apache::thrift::TTracedProcessor>();
+  processor->registerProcessor( "composePostService-3", 
+    std::make_shared<ComposePostServiceProcessor>(
           std::make_shared<ComposePostHandler>(
               &redis_client_pool,
               &post_storage_client_pool,
               &user_timeline_client_pool,
-              &rabbitmq_client_pool)),
+              &rabbitmq_client_pool))
+  );
+
+  TThreadedServer server(
+      processor,
       std::make_shared<TServerSocket>("0.0.0.0", port),
       std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>()

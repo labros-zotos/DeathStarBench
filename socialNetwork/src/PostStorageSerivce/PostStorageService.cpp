@@ -62,10 +62,15 @@ int main(int argc, char *argv[]) {
   }
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
 
-  TThreadedServer server (
-      std::make_shared<PostStorageServiceProcessor>(
+  auto processor = std::make_shared<::apache::thrift::TTracedProcessor>();
+  processor->registerProcessor( "postStorageService-5", 
+    std::make_shared<PostStorageServiceProcessor>(
           std::make_shared<PostStorageHandler>(
-              memcached_client_pool, mongodb_client_pool)),
+              memcached_client_pool, mongodb_client_pool))
+  );
+
+  TThreadedServer server (
+      processor,
       std::make_shared<TServerSocket>("0.0.0.0", port),
       std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>()

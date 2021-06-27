@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
   std::mutex thread_lock;
 
   TracedClientPool<TracedThriftClient<ComposePostServiceClient>> compose_post_client_pool(
-      "compose-post", compose_post_addr, compose_post_port, 0, 128, 1000, "userService-1", "composePostService-2");
+      "compose-post", compose_post_addr, compose_post_port, 0, 128, 1000, "userService-1", "composePostService-3");
 
   TracedClientPool<TracedThriftClient<SocialGraphServiceClient>> social_graph_client_pool(
       "social-graph", social_graph_addr, social_graph_port, 0, 128, 1000, "userService-1", "socialGraphService-2");

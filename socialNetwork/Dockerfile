@@ -1,7 +1,7 @@
 FROM yg397/thrift-microservice-deps:xenial
 
 ARG NUM_CPUS=3
-
+RUN apt-get -qq install libpqxx-dev
 COPY ./ /social-network-microservices
 RUN cd /social-network-microservices \
     && mkdir -p build \
